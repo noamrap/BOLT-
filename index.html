@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,6 @@
     <title>BOLT - קפטריה עד לשולחן</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
-
         body {
             font-family: 'Rubik', sans-serif;
             background: linear-gradient(135deg, #000428, #004e92);
@@ -20,7 +19,6 @@
             text-align: center;
             overflow: hidden;
         }
-
         .container {
             background: rgba(255, 255, 255, 0.1);
             padding: 25px;
@@ -29,12 +27,10 @@
             width: 350px;
             backdrop-filter: blur(10px);
         }
-
         h1 {
             font-size: 26px;
             margin-bottom: 10px;
         }
-
         label, input, select, button {
             width: 100%;
             padding: 10px;
@@ -45,12 +41,10 @@
             display: block;
             text-align: right;
         }
-
         input, select {
             background: rgba(255, 255, 255, 0.7);
             color: black;
         }
-
         button {
             background: linear-gradient(90deg, #ff7300, #ff9800);
             color: white;
@@ -58,11 +52,9 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
-            button:hover {
-                background: linear-gradient(90deg, #ff5700, #ff7300);
-            }
-
+        button:hover {
+            background: linear-gradient(90deg, #ff5700, #ff7300);
+        }
         .message {
             display: none;
             font-size: 18px;
@@ -70,19 +62,10 @@
             margin-top: 15px;
             animation: fadeIn 1s ease-out;
         }
-
         @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
-
         .bolt {
             font-size: 40px;
             font-weight: bold;
@@ -90,17 +73,20 @@
             opacity: 0;
             animation: pulse 1.5s infinite alternate;
         }
-
         @keyframes pulse {
-            0% {
-                opacity: 0.5;
-                transform: scale(1);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+            animation: blink 1s infinite alternate;
+        }
+        @keyframes blink {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; color: #ff9800; }
         }
     </style>
 </head>
@@ -109,29 +95,47 @@
         <h1>הזמן ישירות לשולחן!</h1>
         <label for="classroom">מספר כיתה:</label>
         <input type="text" id="classroom" placeholder="הכנס מספר כיתה" required>
-
+        
         <label for="lesson">שיעור:</label>
         <input type="text" id="lesson" placeholder="באיזה שיעור אתה?" required>
-
+        
         <label for="food">הזמנת מאכל:</label>
         <input type="text" id="food" placeholder="מה תרצה להזמין?" required>
-
+        
         <label for="hunger">רמת רעב:</label>
         <select id="hunger">
             <option value="קליל">קליל</option>
             <option value="בינוני">בינוני</option>
             <option value="רעב מאוד">רעב מאוד</option>
         </select>
-
+        
         <button onclick="placeOrder()">שלח הזמנה</button>
         <div class="message" id="message">🚀 ההזמנה שלך יוצאת לדרך ותגיע במהירות! 🍽️</div>
+        <div class="timer" id="timer">⏳ 05:00</div>
         <div class="bolt" id="bolt">⚡ BOLT ⚡</div>
     </div>
 
     <script>
         function placeOrder() {
             document.getElementById("message").style.display = "block";
+            document.getElementById("timer").style.display = "block";
             document.getElementById("bolt").style.opacity = "1";
+            startTimer(5 * 60, document.getElementById("timer"));
+        }
+        
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            let interval = setInterval(() => {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = "⏳ " + minutes + ":" + seconds;
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    display.textContent = "🍽️ ההזמנה הגיעה!";
+                }
+            }, 1000);
         }
     </script>
 </body>
